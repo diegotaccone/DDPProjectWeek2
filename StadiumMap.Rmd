@@ -1,0 +1,32 @@
+---
+title: "20 Largest Stadiums in Argentina"
+author: "Diego Taccone"
+date: "2/8/2020"
+output: html_document
+---
+
+```{r loaddata,echo = FALSE}
+library(readxl)
+base <- read_excel("baseestadios.xlsx")
+ubicacion <- base[,5:6]
+pop <- base[,2:4]
+pop$stad <- paste("Stadium:",pop$Stadium,sep=" ")
+pop$cap <- paste("Capacity:",pop$Capacity,sep=" ")
+pop$eq  <- paste("Team:",pop$Team,sep=" ")
+pop$popup <- paste(pop$stad,pop$cap,pop$eq,sep=" ")
+tabla <- base[,1:4]
+```
+
+## 20 Largest Football Stadiums in Argentina
+
+```{r tabla,echo = FALSE,comment ="",message = FALSE}
+tabla
+```
+
+## Stadium Location
+
+```{r map,echo=FALSE,message = FALSE}
+library(leaflet)
+library(dplyr)
+ubicacion %>% leaflet() %>% addTiles %>% addCircleMarkers(weight = 1,clusterOptions = markerClusterOptions(),popup = pop$popup) 
+```
